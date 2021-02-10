@@ -63,23 +63,27 @@ public class Employe {
     }
 
     /**
-     * 
+     * Méthode permettant de calculer le nombre de jour de RTT dans l'année
+     * Nb jours RTT =
+     * Nombre de jours dans l'année
+     *
      * @param d
      * @return
      */
-    public Integer getNbRtt(LocalDate d){
+    public Integer getNbRtt(LocalDate d) {
         int i1 = d.isLeapYear() ? 365 : 366;
         int var = 104;
-        switch (LocalDate.of(d.getYear(),1,1).getDayOfWeek()){
+        switch (LocalDate.of(d.getYear(), 1, 1).getDayOfWeek()) {
             case THURSDAY:
-                if(d.isLeapYear())
-                    var =  var + 1;
+                if (d.isLeapYear())
+                    var = var + 1;
                 break;
             case FRIDAY:
-                if(d.isLeapYear()) var =  var + 2;
-                else var =  var + 1;
+                if (d.isLeapYear()) var = var + 2;
+                else var = var + 1;
                 break;
-            case SATURDAY:var = var + 1;
+            case SATURDAY:
+                var = var + 1;
                 break;
         }
         int monInt = (int) Entreprise.joursFeries(d).stream().filter(localDate ->
