@@ -47,7 +47,10 @@ public class Employe {
      * Méthode calculant le nombre d'années d'ancienneté à partir de la date d'embauche
      * @return
      */
-    public Integer getNombreAnneeAnciennete() {
+    public Integer getNombreAnneeAnciennete() throws IllegalArgumentException {
+        if(dateEmbauche == null)
+            throw new IllegalArgumentException("La date d'embauche n'est pas renseignée !");
+
         return LocalDate.now().getYear() - dateEmbauche.getYear();
     }
 
