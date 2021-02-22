@@ -56,7 +56,7 @@ public class EmployeService {
         matricule = typeEmploye + matricule.substring(matricule.length() - 5);
         //On vérifie l'existence d'un employé avec ce matricule
         if(employeRepository.findByMatricule(matricule) != null){
-            logger.error("L'employé de matricule " + matricule + " existe déjà en BDD");
+            logger.error("L'employé de matricule {} existe déjà en BDD", matricule);
             throw new EntityExistsException("L'employé de matricule " + matricule + " existe déjà en BDD");
         }
 

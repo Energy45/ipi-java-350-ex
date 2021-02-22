@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
 
-public class EmployeTest {
+class EmployeTest {
 
     @Test
     void shouldGetNombreAnneeAncienneteEqualsToTenYears() {
@@ -33,7 +33,7 @@ public class EmployeTest {
         Integer anneeAnciennete = employe.getNombreAnneeAnciennete();
 
         //Then
-        assertThat(anneeAnciennete).isEqualTo(0);
+        assertThat(anneeAnciennete).isZero();
     }
 
     @Test

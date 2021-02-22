@@ -30,10 +30,10 @@ public class Employe {
 
     private Double tempsPartiel = 1.0;
 
-    public static String EXCEPTION_NEGATIVE_PERCENTAGE = "Impossible de mettre un pourcentage négatif !";
-    public static String EXCEPTION_NULL_PERCENTAGE = "Impossible de mettre un pourcentage null !";
-    public static String EXCEPTION_NEGATIVE_SALARY = "Le salaire de base est négatif ou a 0 !";
-    public static String EXCEPTION_NULL_SALARY = "Le salaire de base est null !";
+    public static final String EXCEPTION_NEGATIVE_PERCENTAGE = "Impossible de mettre un pourcentage négatif !";
+    public static final String EXCEPTION_NULL_PERCENTAGE = "Impossible de mettre un pourcentage null !";
+    public static final String EXCEPTION_NEGATIVE_SALARY = "Le salaire de base est négatif ou a 0 !";
+    public static final String EXCEPTION_NULL_SALARY = "Le salaire de base est null !";
 
     public Employe() {
     }
