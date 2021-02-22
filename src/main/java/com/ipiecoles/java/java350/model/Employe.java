@@ -30,6 +30,11 @@ public class Employe {
 
     private Double tempsPartiel = 1.0;
 
+    public static final String EXCEPTION_NEGATIVE_PERCENTAGE = "Impossible de mettre un pourcentage négatif !";
+    public static final String EXCEPTION_NULL_PERCENTAGE = "Impossible de mettre un pourcentage null !";
+    public static final String EXCEPTION_NEGATIVE_SALARY = "Le salaire de base est négatif ou a 0 !";
+    public static final String EXCEPTION_NULL_SALARY = "Le salaire de base est null !";
+
     public Employe() {
     }
 
@@ -62,25 +67,54 @@ public class Employe {
         return getNbRtt(LocalDate.now());
     }
 
-    public Integer getNbRtt(LocalDate d){
-        int i1 = d.isLeapYear() ? 365 : 366;
-        int var = 104;
-        switch (LocalDate.of(d.getYear(),1,1).getDayOfWeek()){
+    /**
+     * Méthode permettant de calculer le nombre de jour de RTT dans l'année (au pro-rata du taux d'activité de l'employé)
+     * selon la formule :
+     * Nb jours RTT =
+     * Nombre de jours dans l'année
+     * - Nombre de jours travaillés dans l'année en plein temps
+     * - Nombre de samedi et dimanche dans l'année
+     * - Nombre de jours fériés ne tombant pas le week-end
+     * - Nombre de congés payés
+     *
+     * @param dateReference la date à laquelle on va calculer le nombre de RTT pour l'année
+     * @return Nombre de jours de RTT pour l'employé l'année de la date de référence
+     * au prorata du temps d'activité
+     */
+    public Integer getNbRtt(LocalDate dateReference) {
+        int nbJoursAnnee = dateReference.isLeapYear() ? 366 : 365;
+        int nbSamediDimanche = 104;
+        switch (LocalDate.of(dateReference.getYear(), 1, 1).getDayOfWeek()) {
             case THURSDAY:
-                if(d.isLeapYear())
-                    var =  var + 1;
+                if (dateReference.isLeapYear()) {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
                 break;
             case FRIDAY:
-                if(d.isLeapYear()) var =  var + 2;
-                else var =  var + 1;
+                if (dateReference.isLeapYear()) {
+                    nbSamediDimanche = nbSamediDimanche + 2;
+                }
+                else {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
                 break;
-            case SATURDAY:var = var + 1;
+            case SATURDAY:
+                nbSamediDimanche = nbSamediDimanche + 1;
+                break;
+            default:
                 break;
         }
-        int monInt = (int) Entreprise.joursFeries(d).stream().filter(localDate ->
+        int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(dateReference).stream().filter(localDate ->
                 localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
-        return (int) Math.ceil((i1 - Entreprise.NB_JOURS_MAX_FORFAIT - var - Entreprise.NB_CONGES_BASE - monInt) * tempsPartiel);
+        return (int) Math.ceil((
+                nbJoursAnnee
+                        - Entreprise.NB_JOURS_MAX_FORFAIT
+                        - nbSamediDimanche
+                        - Entreprise.NB_CONGES_BASE
+                        - nbJoursFeriesSemaine
+        ) * tempsPartiel);
     }
+
 
     /**
      * Calcul de la prime annuelle selon la règle :
@@ -117,8 +151,35 @@ public class Employe {
         return prime * this.tempsPartiel;
     }
 
+    /**
+     * Augmentation de salaire d'un employé en fonction d'un pourcentage
+     *
+     * Le pourcentage ne doit pas être négatif ou null
+     * Le salaire de base ne doit pas etre négatif ou null
+     * @param pourcentage Le pourcentage d'augmentation du salaire
+     * @throws IllegalArgumentException Retourne une exception si le salaire de base est négatif ou null ou si le
+     * pourcentage est négatif ou null
+     */
     //Augmenter salaire
-    //public void augmenterSalaire(double pourcentage){}
+    public void augmenterSalaire(Double pourcentage) throws IllegalArgumentException {
+        if(this.salaire == null) {
+            throw new IllegalArgumentException(EXCEPTION_NULL_SALARY);
+        }
+
+        if(this.salaire < 0) {
+            throw new IllegalArgumentException(EXCEPTION_NEGATIVE_SALARY);
+        }
+
+        if(pourcentage != null) {
+            if(pourcentage > 0) {
+                 this.salaire = this.salaire + this.salaire * (pourcentage / 100D);
+            } else if(pourcentage < 0) {
+                throw new IllegalArgumentException(EXCEPTION_NEGATIVE_PERCENTAGE);
+            }
+        } else {
+            throw new IllegalArgumentException(EXCEPTION_NULL_PERCENTAGE);
+        }
+    }
 
     public Long getId() {
         return id;

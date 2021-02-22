@@ -2,31 +2,25 @@ package com.ipiecoles.java.java350.repository;
 
 
 import com.ipiecoles.java.java350.model.Employe;
-import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 
-//@ExtendWith(SpringExtension.class)
-//@DataJdbcTest
 @SpringBootTest
 
-public class EmployeRepositoryTest {
+class EmployeRepositoryTest {
 
     @Autowired
     EmployeRepository employeRepository;
 
 
     @Test
-    public void testFindLastMatriclule0Emplye(){
+    void testFindLastMatriclule0Emplye(){
         //GIVEB
         employeRepository.deleteAll();
 
@@ -40,7 +34,7 @@ public class EmployeRepositoryTest {
     }
 
     @Test
-    public void testFindLastMatricule1Employe(){
+    void testFindLastMatricule1Employe(){
         //Given
         employeRepository.deleteAll();
         //Insérer des données en base
@@ -55,7 +49,7 @@ public class EmployeRepositoryTest {
     }
 
     @Test
-    public void testFindLastMatricluleNEmploey(){
+    void testFindLastMatriculeEmploye(){
         //GIven
         employeRepository.save(new Employe("Doe","Jhon", "T12345", LocalDate.now(),1500d,1,1.0));
         employeRepository.save(new Employe("Doe","Smit", "M40325", LocalDate.now(),1500d,1,1.0));
@@ -68,9 +62,21 @@ public class EmployeRepositoryTest {
         Assertions.assertThat(lastMatricule).isEqualTo("40325");
 
     }
+
+    @Test
+    void testAvgPerformanceEmploye() {
+        employeRepository.save(new Employe("Doe","Jhon", "C12345", LocalDate.now(),1500d,5,1.0));
+        employeRepository.save(new Employe("Doe","Smit", "C40325", LocalDate.now(),1500d,5,1.0));
+        employeRepository.save(new Employe("Doe","jim", "C06432", LocalDate.now(),1500d,2,1.0));
+
+        Double avgPerformance = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
+
+        Assertions.assertThat(avgPerformance).isEqualTo(4);
+    }
+
     @BeforeEach
     @AfterEach
-    public void purgeBdd(){
+    void purgeBdd(){
         employeRepository.deleteAll();
     }
 

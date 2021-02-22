@@ -1,6 +1,5 @@
 package com.ipiecoles.java.java350.model;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
 
-public class EmployeTest {
+class EmployeTest {
 
     @Test
     void shouldGetNombreAnneeAncienneteEqualsToTenYears() {
@@ -34,7 +33,7 @@ public class EmployeTest {
         Integer anneeAnciennete = employe.getNombreAnneeAnciennete();
 
         //Then
-        assertThat(anneeAnciennete).isEqualTo(0);
+        assertThat(anneeAnciennete).isZero();
     }
 
     @Test
@@ -79,5 +78,70 @@ public class EmployeTest {
         employe.setTempsPartiel(tempsPartiel);
 
         assertThat(employe.getPrimeAnnuelle()).isEqualTo(primeAnnuelle);
+    }
+
+    @Test
+    void shouldAugmenterSalaireSuccessful() {
+        Employe employe = new Employe();
+        employe.setSalaire(1000D);
+
+        employe.augmenterSalaire(10D);
+
+        assertThat(employe.getSalaire()).isEqualTo(1100D);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecauseNegative() {
+        Employe employe = new Employe();
+        employe.setSalaire(1000D);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(-10D))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NEGATIVE_PERCENTAGE);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecausePercentIsNull() {
+        Employe employe = new Employe();
+        employe.setSalaire(1000D);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NULL_PERCENTAGE);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecauseSalaryIsLessEqualsThanZero() {
+        Employe employe = new Employe();
+        employe.setSalaire(-1D);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(10D))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NEGATIVE_SALARY);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecauseSalaryIsNull() {
+        Employe employe = new Employe();
+        employe.setSalaire(null);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(15D))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NULL_SALARY);
+    }
+
+    @ParameterizedTest(name = "Année : {2}/{1}/{0}  Nombre de RTT attendu : {3}")
+    @CsvSource({
+            "2019, 12, 12, 8",
+            "2021, 12, 1, 10",
+            "2022, 5, 12, 10",
+            "2032, 4, 4, 11"
+    })
+    void testGetNbRtt(Integer year, Integer month, Integer day, Integer expectedRtt) {
+        Employe employe = new Employe();
+
+        Integer nbRtt = employe.getNbRtt(LocalDate.of(year, month, day));
+
+        assertThat(nbRtt).isEqualTo(expectedRtt);
     }
 }
