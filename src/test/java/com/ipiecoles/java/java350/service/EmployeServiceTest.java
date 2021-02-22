@@ -100,6 +100,7 @@ class EmployeServiceTest {
         Mockito.when(employeRepository.findLastMatricule()).thenReturn(null);
         //Simuler que la recherche par matricule ne renvoie pas de résultats
         Mockito.when(employeRepository.findByMatricule("T00001")).thenReturn(null);
+        Mockito.when(employeRepository.save(Mockito.any(Employe.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
         //When
         employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
         //Then
