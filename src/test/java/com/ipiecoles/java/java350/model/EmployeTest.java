@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.time.LocalDate;
 
@@ -130,5 +132,18 @@ class EmployeTest {
                 .hasMessageContaining(Employe.EXCEPTION_NULL_SALARY);
     }
 
+    @ParameterizedTest(name = "Année : {2}/{1}/{0}  Nombre de RTT attendu : {3}")
+    @CsvSource({
+            "2019, 12, 12, 8",
+            "2021, 12, 1, 10",
+            "2022, 5, 12, 10",
+            "2032, 4, 4, 11"
+    })
+    void testGetNbRtt(Integer year, Integer month, Integer day, Integer expectedRtt) {
+        Employe employe = new Employe();
 
+        Integer nbRtt = employe.getNbRtt(LocalDate.of(year, month, day));
+
+        assertThat(nbRtt).isEqualTo(expectedRtt);
+    }
 }

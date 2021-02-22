@@ -41,5 +41,21 @@ class EmployeServiceIntegrationTest {
         Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
     }
 
+    @Test
+    public void testCalculPerformanceCommercial() throws EmployeException {
+        Employe employe = new Employe();
+        employe.setMatricule("C0001");
+        employe.setPerformance(5);
+
+        employeRepository.save(employe);
+
+        Long caTraite = 850L;
+        Long caObjectif = 1000L;
+
+        employeService.calculPerformanceCommercial(employe.getMatricule(), caTraite, caObjectif);
+
+        Assertions.assertThat(employe.getPerformance()).isEqualTo(5);
+    }
+
 
 }

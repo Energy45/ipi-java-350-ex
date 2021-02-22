@@ -94,12 +94,14 @@ public class Employe {
                 if (dateReference.isLeapYear()) {
                     nbSamediDimanche = nbSamediDimanche + 2;
                 }
-            else {
-                nbSamediDimanche = nbSamediDimanche + 1;
-            }
-            break;
+                else {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
+                break;
             case SATURDAY:
                 nbSamediDimanche = nbSamediDimanche + 1;
+                break;
+            default:
                 break;
         }
         int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(dateReference).stream().filter(localDate ->
