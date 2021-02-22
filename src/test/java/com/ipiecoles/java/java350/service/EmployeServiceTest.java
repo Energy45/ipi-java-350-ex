@@ -27,7 +27,7 @@ class EmployeServiceTest {
     @Mock
     private EmployeRepository employeRepository;
     @Test
-    public void testEmbaucheEmployeExisteDeja() throws EmployeException {
+    void testEmbaucheEmployeExisteDeja() throws EmployeException {
         //Given Pas d'employés en base
         String nom = "Doe";
         String prenom = "John";
@@ -53,7 +53,7 @@ class EmployeServiceTest {
 
 
     @Test
-    public void testEmbauchePremierEmploye() throws EmployeException {
+    void testEmbauchePremierEmploye() throws EmployeException {
         //Given Pas d'employés en base
         String nom = "Doe";
         String prenom = "John";
@@ -89,7 +89,7 @@ class EmployeServiceTest {
 
 
     @Test
-    public void testEmbauchePremierEmploye2() throws EmployeException {
+    void testEmbauchePremierEmploye2() throws EmployeException {
         //Given Pas d'employés en base
         String nom = "Doe";
         String prenom = "John";

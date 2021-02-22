@@ -149,6 +149,15 @@ public class Employe {
         return prime * this.tempsPartiel;
     }
 
+    /**
+     * Augmentation de salaire d'un employé en fonction d'un pourcentage
+     *
+     * Le pourcentage ne doit pas être négatif ou null
+     * Le salaire de base ne doit pas etre négatif ou null
+     * @param pourcentage Le pourcentage d'augmentation du salaire
+     * @throws IllegalArgumentException Retourne une exception si le salaire de base est négatif ou null ou si le
+     * pourcentage est négatif ou null
+     */
     //Augmenter salaire
     public void augmenterSalaire(Double pourcentage) throws IllegalArgumentException {
         if(this.salaire == null) {
