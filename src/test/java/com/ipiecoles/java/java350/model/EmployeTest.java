@@ -1,6 +1,5 @@
 package com.ipiecoles.java.java350.model;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
@@ -80,4 +79,56 @@ public class EmployeTest {
 
         assertThat(employe.getPrimeAnnuelle()).isEqualTo(primeAnnuelle);
     }
+
+    @Test
+    void shouldAugmenterSalaireSuccessful() {
+        Employe employe = new Employe();
+        employe.setSalaire(1000D);
+
+        employe.augmenterSalaire(10D);
+
+        assertThat(employe.getSalaire()).isEqualTo(1100D);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecauseNegative() {
+        Employe employe = new Employe();
+        employe.setSalaire(1000D);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(-10D))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NEGATIVE_PERCENTAGE);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecausePercentIsNull() {
+        Employe employe = new Employe();
+        employe.setSalaire(1000D);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NULL_PERCENTAGE);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecauseSalaryIsLessEqualsThanZero() {
+        Employe employe = new Employe();
+        employe.setSalaire(-1D);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(10D))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NEGATIVE_SALARY);
+    }
+
+    @Test
+    void shouldAugmenterSalaireThrowIllegalArgumentExceptionBecauseSalaryIsNull() {
+        Employe employe = new Employe();
+        employe.setSalaire(null);
+
+        assertThatThrownBy(() -> employe.augmenterSalaire(15D))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Employe.EXCEPTION_NULL_SALARY);
+    }
+
+
 }
