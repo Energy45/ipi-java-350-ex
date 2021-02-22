@@ -21,7 +21,7 @@ class EmployeServiceIntegrationTest {
     private EmployeRepository employeRepository;
 
     @Test
-    public void testEmbauchePremierEmploye() throws EmployeException {
+    void testEmbauchePremierEmploye() throws EmployeException {
         //Given Pas d'employés en base
         String nom = "Doe";
         String prenom = "John";
@@ -42,19 +42,21 @@ class EmployeServiceIntegrationTest {
     }
 
     @Test
-    public void testCalculPerformanceCommercial() throws EmployeException {
+    void testCalculPerformanceCommercial() throws EmployeException {
         Employe employe = new Employe();
         employe.setMatricule("C0001");
         employe.setPerformance(5);
 
         employeRepository.save(employe);
 
-        Long caTraite = 850L;
+        Long caTraite = 1100L;
         Long caObjectif = 1000L;
 
         employeService.calculPerformanceCommercial(employe.getMatricule(), caTraite, caObjectif);
 
-        Assertions.assertThat(employe.getPerformance()).isEqualTo(5);
+        employe = employeRepository.findByMatricule("C0001");
+
+        Assertions.assertThat(employe.getPerformance()).isEqualTo(7);
     }
 
 

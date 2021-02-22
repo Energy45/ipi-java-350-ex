@@ -55,7 +55,7 @@ public class EmployeRepositoryTest {
     }
 
     @Test
-    public void testFindLastMatricluleNEmploey(){
+    public void testFindLastMatriculeEmploye(){
         //GIven
         employeRepository.save(new Employe("Doe","Jhon", "T12345", LocalDate.now(),1500d,1,1.0));
         employeRepository.save(new Employe("Doe","Smit", "M40325", LocalDate.now(),1500d,1,1.0));
@@ -68,6 +68,18 @@ public class EmployeRepositoryTest {
         Assertions.assertThat(lastMatricule).isEqualTo("40325");
 
     }
+
+    @Test
+    public void testAvgPerformanceEmploye() {
+        employeRepository.save(new Employe("Doe","Jhon", "C12345", LocalDate.now(),1500d,5,1.0));
+        employeRepository.save(new Employe("Doe","Smit", "C40325", LocalDate.now(),1500d,5,1.0));
+        employeRepository.save(new Employe("Doe","jim", "C06432", LocalDate.now(),1500d,2,1.0));
+
+        Double avgPerformance = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
+
+        Assertions.assertThat(avgPerformance).isEqualTo(4);
+    }
+
     @BeforeEach
     @AfterEach
     public void purgeBdd(){
